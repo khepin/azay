@@ -1,0 +1,20 @@
+{
+    "name": "khepin/partibus",
+    "description": "A parsing library to help library to help you generate all kinds of parsers.",
+    "require-dev": {
+        "phpunit/phpunit": "^5.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "khepin - Sébastien Armand",
+            "email": "khepin@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Khepin\\": "src/Khepin"
+        }
+    }
+}

@@ -1,0 +1,7 @@
+- [✔️] Add `<token> = ...` rules with unsplicing
+- [ ] Beter parse errors
+- [ ] Write in PHP7 with strong types wherever possible
+- [✔️] Test and coverage
+- [ ] Add compiler to output actual PHP code
+- [ ] Add documentation
+- [ ] Explore possibilities of using GLL in PHP
