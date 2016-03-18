@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 use Khepin\Partibus\Combinators as c;
@@ -13,14 +14,14 @@ class BnfGrammar {
      * @param  string $input
      * @return array
      */
-    static function parse($input) {
+    static function parse(string $input) : array {
         // We'll parse single lines rather than a whole file
         $lines = explode("\n", $input);
         $lines = array_map(function($line){ return trim($line); }, $lines);
         // Remove commented lines
-        $lines = array_filter($lines, function($line) {return !(substr($line, 0, 2) === '//');});
+        $lines = array_filter($lines, function(string $line) : bool {return !(substr($line, 0, 2) === '//');});
 
-        return array_map(function($line) {
+        return array_map(function(string $line) : array {
             return self::_parse(new Input($line));
         }, $lines);
     }
@@ -30,7 +31,7 @@ class BnfGrammar {
      * @param  Input  $input
      * @return array
      */
-    static function _parse(Input $input) {
+    static function _parse(Input $input) : array {
         $token_name = '([a-zA-Z-_]+|ε)';
         $token_regexp = sprintf('%s|<%s>', $token_name, $token_name);
         $token_parser = p::regexp($token_regexp);

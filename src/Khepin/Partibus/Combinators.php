@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 /**
@@ -11,7 +12,7 @@ class Combinators {
      * only if all the supplied parsers passed in the order they were given.
      * @return callable
      */
-    static function _and() {
+    static function _and() : callable {
         $parsers = func_get_args();
 
         return function(Input $input) use ($parsers) {
@@ -37,7 +38,7 @@ class Combinators {
      * Only the input consumed by that parser will be consumed.
      * @return callable
      */
-    static function _or() {
+    static function _or() : callable {
         $parsers = func_get_args();
 
         return static function (Input $input) use ($parsers) {
@@ -62,7 +63,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function star($parser) {
+    static function star(callable $parser) : callable {
         return function(Input $input) use ($parser){
             $output = [];
             $pos = 0;
@@ -89,7 +90,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function maybe($parser) {
+    static function maybe(callable $parser) : callable {
         return function(Input $input) use ($parser){
             $pos = $input->position;
             try {
@@ -106,7 +107,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function plus($parser) {
+    static function plus(callable $parser) : callable {
         return function(Input $input) use ($parser) {
             $output = [];
             $output[] = $parser($input); // It must be there at least once so if this gives an exception, let it fail.
@@ -127,7 +128,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function look($parser) {
+    static function look(callable $parser) : callable {
         return function(Input $input) use ($parser) {
             $pos = $input->position;
             $parser($input);
@@ -142,7 +143,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function not($parser) {
+    static function not(callable $parser) : callable {
         return function(Input $input) use ($parser){
             $try_parser = self::look($parser);
             try {
@@ -162,7 +163,7 @@ class Combinators {
      * @param  callable &$parser
      * @return callable
      */
-    static function ref(&$parser) {
+    static function ref(&$parser) : callable {
         return function(Input $input) use (&$parser) {
             return $parser($input);
         };
@@ -176,7 +177,7 @@ class Combinators {
      * @param  t                 $ref
      * @return callable
      */
-    static function grammar_ref(\splObjectStorage &$grammar, t $ref) {
+    static function grammar_ref(\splObjectStorage &$grammar, t $ref) : callable {
         return function(Input $input) use (&$grammar, $ref) {
             return $grammar[$ref]($input);
         };
@@ -188,7 +189,7 @@ class Combinators {
      * @param  callable $parser
      * @return callable
      */
-    static function hide($parser) {
+    static function hide(callable $parser) : callable {
         return function(Input $input) use ($parser) {
             $parser($input);
             return null;

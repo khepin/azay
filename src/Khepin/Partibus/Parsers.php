@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 /**
@@ -10,7 +11,7 @@ class Parsers {
      * @param  string $string
      * @return function
      */
-    static function _string($string) {
+    static function _string(string $string) : callable {
         $len = strlen($string);
         return function(Input $input) use ($len, $string) {
             $read = $input->read($len);
@@ -29,7 +30,7 @@ class Parsers {
      * @param  string $regexp
      * @return function
      */
-    static function regexp($regexp) {
+    static function regexp(string $regexp) : callable {
         if ($regexp[0] !== '^') {
             $regexp = '^' . $regexp;
         }
@@ -53,7 +54,7 @@ class Parsers {
      * @param  Input  $input
      * @return array
      */
-    static function epsilon(Input $input) {
+    static function epsilon(Input $input) : array {
         if ($input->read() !== '') {
             throw new ParseException($input);
         }
@@ -64,7 +65,7 @@ class Parsers {
      * Returns the epsilon parser as a closure
      * @return callable
      */
-    static function get_epsilon() {
+    static function get_epsilon() : callable {
         return function(Input $input) {
             return self::epsilon($input);
         };
@@ -78,7 +79,7 @@ class Parsers {
      * @param  string $grammar_string
      * @return array
      */
-    static function from_grammar($grammar_string) {
+    static function from_grammar($grammar_string) : callable {
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         return function($string_input) use ($parser) {
             return $parser(new Input($string_input));

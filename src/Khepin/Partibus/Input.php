@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 /**
@@ -20,7 +21,7 @@ class Input {
     /**
      * @param string $string
      */
-    public function __construct($string = '') {
+    public function __construct(string $string = '') {
         $this->input = $string;
     }
 
@@ -29,7 +30,7 @@ class Input {
      * @param  integer $i
      * @return string
      */
-    public function read($i = 1) {
+    public function read(int $i = 1) : string {
         $substr = substr($this->input, $this->position, $i);
         return $substr;
     }
@@ -39,7 +40,7 @@ class Input {
      * since we don't know in advance what length of input they will consume.
      * @return string
      */
-    public function read_to_end() {
+    public function read_to_end() : string {
         $substr = substr($this->input, $this->position);
         return $substr;
     }
@@ -49,7 +50,7 @@ class Input {
      * @param  integer $i
      * @return \Khepin\Partibus\Input
      */
-    public function advance($i = 1) {
+    public function advance(int $i = 1) : Input {
         $this->position += $i;
         return $this;
     }

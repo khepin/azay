@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 use Khepin\Partibus\Combinators as c;
 use Khepin\Partibus\Parsers as p;
 use Khepin\Partibus\BnfGrammar as g;
 use Khepin\Partibus\t;
+use \splObjectStorage;
 
 class Compiler {
 
@@ -12,17 +14,17 @@ class Compiler {
 
     static $transforms = null;
 
-    static function compile($asts) {
+    static function compile(array $asts) : callable {
         self::initialize();
-        $grammar = new \splObjectStorage;
-        self::$transforms[t::n('ref')] = function($ref_name) use (&$grammar) {
+        $grammar = new splObjectStorage;
+        self::$transforms[t::n('ref')] = function(string $ref_name) use (&$grammar) : callable {
             if ($ref_name === 'ε') {
                 return p::get_epsilon();
             }
             return c::grammar_ref($grammar, t::n($ref_name));
         };
 
-        array_map(function($ast) use(&$grammar) {
+        array_map(function(array $ast) use(&$grammar) {
             $parser = Tree::transform($ast, self::$transforms);
             $parser = self::add_grammar_parser($grammar, $parser);
 
@@ -38,7 +40,7 @@ class Compiler {
         if (self::$initialized) {
             return;
         }
-        self::$transforms = new \splObjectStorage;
+        self::$transforms = new splObjectStorage;
         self::$transforms[t::n('string')] = function($string) { return p::_string($string);};
         self::$transforms[t::n('regexp')] = function($string) { return p::regexp($string);};
         self::$transforms[t::n('hide')] = function($parser) {
@@ -82,7 +84,7 @@ class Compiler {
         self::$initialized = true;
     }
 
-    static function compile_and_or($parser, $rest) {
+    static function compile_and_or(callable $parser, array $rest) : callable {
         if (empty($rest)) {
             return $parser;
         }
@@ -96,7 +98,7 @@ class Compiler {
         }
     }
 
-    static function add_grammar_parser(&$grammar, $parser) {
+    static function add_grammar_parser(splObjectStorage &$grammar, array $parser) : callable {
         $name = $parser[0];
         if (preg_match('/^<([^>]+)>$/', $parser[0]->name(), $matches)) {
             $name = t::n($matches[1]);

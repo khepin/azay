@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
 
 /**
@@ -25,7 +26,7 @@ class t {
      * Prevent direct instanciation
      * @param string $name
      */
-    private function __construct($name) {
+    private function __construct(string $name) {
         $this->name = $name;
     }
 
@@ -34,7 +35,7 @@ class t {
      * @param  string $name
      * @return \Khepin\Partibus\t
      */
-    public static function n($name) {
+    public static function n(string $name) : t {
         $name = (string) $name;
         if (!isset(self::$instances[$name])) {
             self::$instances[$name] = new self($name);
@@ -47,7 +48,7 @@ class t {
      * Nice string representation
      * @return string [description]
      */
-    public function __toString() {
+    public function __toString() : string {
         return sprintf('#(t::%s)', $this->name);
     }
 
@@ -56,7 +57,7 @@ class t {
      */
     private function __clone(){}
 
-    public function name() {
+    public function name() : string {
         return $this->name;
     }
 }

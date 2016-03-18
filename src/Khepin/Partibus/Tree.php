@@ -1,5 +1,8 @@
 <?php
+declare(strict_types=1);
 namespace Khepin\Partibus;
+
+use \splObjectStorage;
 
 /**
  * Useful function for AST manipulation
@@ -11,7 +14,7 @@ class Tree {
      * @param  array  $a
      * @return array
      */
-    static function rest(array $a) {
+    static function rest(array $a) : array {
         array_shift($a);
         return $a;
     }
@@ -21,11 +24,11 @@ class Tree {
      *  - $node, the first element of the current array
      *  - $values, the rest of the array (everything except the first element)
      * This gives a LISP-like way to evaluate and traverse the array
-     * @param  array $tree
+     * @param  mixed $tree
      * @param  callable $fn
      * @return mixed
      */
-    static function traverse($tree, $fn) {
+    static function traverse($tree, callable $fn) {
         if (!is_array($tree)) {
             return $tree;
         }
@@ -57,7 +60,7 @@ class Tree {
      * @param  splObjectStorage $map
      * @return mixed
      */
-    static function transform($tree, $map) {
+    static function transform(array $tree, splObjectStorage $map) {
         $transform_fn = function($item, array $values = []) use ($map) {
             if (is_object($item) && $map->offsetExists($item) && is_callable($map[$item])) {
                 return call_user_func_array($map[$item], $values);
