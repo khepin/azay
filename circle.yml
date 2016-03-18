@@ -4,3 +4,4 @@ machine:
 test:
   override:
     - ./vendor/bin/phpunit
+
