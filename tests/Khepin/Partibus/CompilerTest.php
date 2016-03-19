@@ -10,7 +10,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase {
 
         $grammar = 'hello = "bob" ε';
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
-        $this->assertEquals($parser(new Input('bob')), [t::n('hello'), 'bob', [t::n('EOF')]]);
+        $this->assertEquals($parser(new Input('bob')), [t::n('hello'), 'bob', [t::n('ε')]]);
 
         $grammar = 'hello = "bob" | "bib"';
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
@@ -106,5 +106,13 @@ more = "a" a';
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('()')), null);
         $this->assertEquals($parser(new Input('(bloup)')), [t::n('a'), 'bloup']);
+    }
+
+    function test_xml_tag_parsing() {
+        $grammar = "tag = <'<'> tagname <ows> (<'/>'> | <'<'> tagname <'>'>)
+tagname = #'[A-Za-z]+'
+ows = #'\s+'";
+        $parser = Compiler::compile(BnfGrammar::parse($grammar));
+        $this->assertEquals($parser(new Input('<Hello />')), [t::n('tag'), [t::n('tagname'), 'Hello']]);
     }
 }

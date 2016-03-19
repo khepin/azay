@@ -74,7 +74,11 @@ class Compiler {
         self::$transforms[t::n('group')] = function($parser, array $rest = []) {
             $actual_parser = self::compile_and_or($parser, $rest);
             return function(Input $input) use ($actual_parser) {
-                return [$actual_parser($input)];
+                $ret = $actual_parser($input);
+                if (is_null($ret)) {
+                    return null;
+                }
+                return [$ret];
             };
         };
         self::$transforms[t::n('compose')] = function($parser, array $rest = []) {

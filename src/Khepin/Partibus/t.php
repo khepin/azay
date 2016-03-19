@@ -49,7 +49,7 @@ class t {
      * @return string [description]
      */
     public function __toString() : string {
-        return sprintf('#(t::%s)', $this->name);
+        return sprintf('t::n(%s)', $this->name);
     }
 
     /**

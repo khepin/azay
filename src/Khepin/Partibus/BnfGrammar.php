@@ -33,13 +33,14 @@ class BnfGrammar {
      */
     static function _parse(Input $input) : array {
         $token_name = '([a-zA-Z-_]+|ε)';
-        $token_regexp = sprintf('%s|<%s>', $token_name, $token_name);
-        $token_parser = p::regexp($token_regexp);
+        $token_parser = p::regexp($token_name);
         $token = function(Input $input) use ($token_parser) {
             return [t::n('ref'), $token_parser($input)];
         };
-        $rule_name = function(Input $input) use ($token_parser) {
-            return [t::n('rule_name'), $token_parser($input)];
+        $rule_name_regexp = sprintf('%s|<%s>', $token_name, $token_name);
+        $rule_name_parser = p::regexp($rule_name_regexp);
+        $rule_name = function(Input $input) use ($rule_name_parser) {
+            return [t::n('rule_name'), $rule_name_parser($input)];
         };
 
         $ows = c::hide(p::regexp('\s*'));
@@ -161,7 +162,7 @@ class BnfGrammar {
         $group_parser = c::_and(
             $ows,
             c::hide(p::_string('(')),
-            $rule,
+            c::_or(c::ref($rule), c::ref($group), c::ref($hidden)),
             c::hide(p::_string(')'))
         );
         $group = function(Input $input) use ($group_parser, $more) {

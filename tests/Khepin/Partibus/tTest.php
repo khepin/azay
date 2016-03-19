@@ -9,7 +9,7 @@ class tTest extends \PHPUnit_Framework_TestCase {
     }
 
     function test___toString() {
-        $this->assertEquals('#(t::bob)', (string) t::n('bob'));
+        $this->assertEquals('t::n(bob)', (string) t::n('bob'));
     }
 
     function test_name() {

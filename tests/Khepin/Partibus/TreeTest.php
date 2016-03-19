@@ -23,7 +23,7 @@ class TreeTest extends \PHPUnit_Framework_TestCase {
             return array_merge([(string) $item], $values);
         });
 
-        $this->assertEquals($traversed, ['#(t::root)', ['#(t::string)', 'hello'], ['#(t::int)', '4']]);
+        $this->assertEquals($traversed, ['t::n(root)', ['t::n(string)', 'hello'], ['t::n(int)', '4']]);
     }
 
     function test_transform() {

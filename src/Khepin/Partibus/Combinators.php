@@ -15,7 +15,7 @@ class Combinators {
     static function _and() : callable {
         $parsers = func_get_args();
 
-        return function(Input $input) use ($parsers) {
+        return function(Input $input) use ($parsers) : array {
             $outputs = [];
             foreach($parsers as $parser) {
                 $result = $parser($input); // Let them fail and send exceptions if needed.
@@ -64,7 +64,7 @@ class Combinators {
      * @return callable
      */
     static function star(callable $parser) : callable {
-        return function(Input $input) use ($parser){
+        return function(Input $input) use ($parser) {
             $output = [];
             $pos = 0;
             try {
@@ -108,7 +108,7 @@ class Combinators {
      * @return callable
      */
     static function plus(callable $parser) : callable {
-        return function(Input $input) use ($parser) {
+        return function(Input $input) use ($parser) : array {
             $output = [];
             $output[] = $parser($input); // It must be there at least once so if this gives an exception, let it fail.
 
@@ -179,6 +179,9 @@ class Combinators {
      */
     static function grammar_ref(\splObjectStorage &$grammar, t $ref) : callable {
         return function(Input $input) use (&$grammar, $ref) {
+            if (!$grammar->offsetExists($ref)) {
+                throw new \Exception('Could not find parser '. $ref);
+            }
             return $grammar[$ref]($input);
         };
     }

@@ -6,7 +6,7 @@ use Khepin\Partibus\epsilon;
 class ParsersTest extends \PHPUnit_Framework_TestCase {
 
     function test_epsilon() {
-        $this->assertEquals([t::n('EOF')], Parsers::epsilon(new Input('')));
+        $this->assertEquals([t::n('ε')], Parsers::epsilon(new Input('')));
 
         $this->expectException(\Exception::class);
         Parsers::epsilon(new Input('hello'));
@@ -14,7 +14,7 @@ class ParsersTest extends \PHPUnit_Framework_TestCase {
 
     function test_get_epsilon() {
         $parser = Parsers::get_epsilon();
-        $this->assertEquals([t::n('EOF')], $parser(new Input('')));
+        $this->assertEquals([t::n('ε')], $parser(new Input('')));
     }
 
     function test__string() {

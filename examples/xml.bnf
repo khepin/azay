@@ -1,0 +1,13 @@
+tag             = <'<'> tagname <ows> properties <ows> endtag
+<self_end_tag>  = <'/>'>
+<more_end_tag>  = <'>'> <ows> children <ows> <'</'> tagname <'>'>
+<endtag>        = self_end_tag | more_end_tag
+ows             = #"\s*"
+tagname         = #"[A-Za-z]+"
+properties      = property*
+property        = property_name <'="'> property_value <'"'> <ows>
+property_name   = #"[A-Za-z]+"
+property_value  = #'(\\\"|[^"])*'
+children        = (child*)
+text            = #"[^<]+"
+child           = tag | text

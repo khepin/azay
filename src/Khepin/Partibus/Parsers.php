@@ -58,7 +58,7 @@ class Parsers {
         if ($input->read() !== '') {
             throw new ParseException($input);
         }
-        return [t::n('EOF')];
+        return [t::n('ε')];
     }
 
     /**
@@ -79,8 +79,15 @@ class Parsers {
      * @param  string $grammar_string
      * @return array
      */
-    static function from_grammar($grammar_string) : callable {
-        $parser = Compiler::compile(BnfGrammar::parse($grammar));
+    static function from_grammar(string $grammar_string, array $options = []) : callable {
+        $parser = Compiler::compile(BnfGrammar::parse($grammar_string));
+
+        if (!isset($options['partial']) || $options['partial'] === true) {
+            $parser = Combinators::_and($parser, Combinators::hide(self::get_epsilon()));
+        }
+        if (isset($options['raw_parser']) && $options['raw_parser'] === true) {
+            return $parser;
+        }
         return function($string_input) use ($parser) {
             return $parser(new Input($string_input));
         };
