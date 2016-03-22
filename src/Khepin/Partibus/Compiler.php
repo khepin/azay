@@ -26,6 +26,9 @@ class Compiler {
 
         array_map(function(array $ast) use(&$grammar) {
             $parser = Tree::transform($ast, self::$transforms);
+            if (isset($parser[0]) && isset($parser[0][0]) && $parser[0][0] === t::n('rule_name')) {
+                $parser[0] = t::n($parser[0][1]);
+            }
             $parser = self::add_grammar_parser($grammar, $parser);
 
             if (!isset($grammar->start)) {
@@ -64,7 +67,6 @@ class Compiler {
         self::$transforms[t::n('rule')] = function($parser, array $rest = []) {
             return self::compile_and_or($parser, $rest);
         };
-        self::$transforms[t::n('rule_name')] = function($name) {return t::n($name);};
         self::$transforms[t::n('look')] = function($parser) {
             return c::look($parser);
         };

@@ -115,4 +115,10 @@ ows = #'\s+'";
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('<Hello />')), [t::n('tag'), [t::n('tagname'), 'Hello']]);
     }
+
+    function test_keyword_named_rules() {
+        $grammar = "string = 'bob'";
+        $parser = Compiler::compile(BnfGrammar::parse($grammar));
+        $this->assertEquals($parser(new Input('bob')), [t::n('string'), 'bob']);
+    }
 }

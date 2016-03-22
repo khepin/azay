@@ -68,4 +68,6 @@ Will produce an output of:
 - [ ] Add documentation
 - [ ] Explore possibilities of using GLL in PHP
 - [x] Add total vs partial parses
-- [ ] Implement a sample XML and JSON parser
+- [x] Implement a sample XML
+- [ ] Implement a sample JSON parser
+- [ ] Have proper EBNF associativity (AND is First, OR is second). This could be done through [t::n('compose')] and something like `&"|"`
