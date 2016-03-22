@@ -26,6 +26,8 @@ class Compiler {
 
         array_map(function(array $ast) use(&$grammar) {
             $parser = Tree::transform($ast, self::$transforms);
+            // We compile rule names here, otherwise they could have a name like t::n('string') which we would try to compile
+            // right here and get a bug.
             if (isset($parser[0]) && isset($parser[0][0]) && $parser[0][0] === t::n('rule_name')) {
                 $parser[0] = t::n($parser[0][1]);
             }
