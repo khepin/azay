@@ -59,15 +59,12 @@ Will produce an output of:
 
 ## Wishful Roadmap
 
-- [x] Add `<token> = ...` rules with unsplicing
+- [ ] Ensure group rule `()` and ignore rule `<>` can mix with `?, &, !, +, *`
+- [ ] Have concatenation take precedence over alternation
 - [ ] Beter parse errors
-- [x] Write in PHP7 with strong types wherever possible
 - [ ] Try to always return arrays. Return empty ones instead of null. Check for `empty($result)` instead of `is_null($result)` Careful, sometimes we might actually want the empty array...
-- [x] Test and coverage
 - [ ] Add compiler to output actual PHP code
 - [ ] Add documentation
 - [ ] Explore possibilities of using GLL in PHP
-- [x] Add total vs partial parses
-- [x] Implement a sample XML
 - [ ] Implement a sample JSON parser
 - [ ] Have proper EBNF associativity (AND is First, OR is second). This could be done through [t::n('compose')] and something like `&"|"`

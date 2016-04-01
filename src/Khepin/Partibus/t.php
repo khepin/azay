@@ -60,4 +60,17 @@ class t {
     public function name() : string {
         return $this->name;
     }
+
+    public function __invoke() {
+        $args = func_get_args();
+        $map = $args[0];
+
+        if ($map instanceof \splObjectStorage) {
+            return $map[$this];
+        }
+        if (is_array($map)) {
+            return $map[$this->name()];
+        }
+        return null;
+    }
 }

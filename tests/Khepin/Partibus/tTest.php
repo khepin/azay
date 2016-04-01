@@ -15,4 +15,14 @@ class tTest extends \PHPUnit_Framework_TestCase {
     function test_name() {
         $this->assertEquals('bibi', t::n('bibi')->name());
     }
+
+    function test_invoke() {
+        $map = new \splObjectStorage;
+        $map[t::n('bob')] = 'hello';
+
+        $this->assertEquals('hello', t::n('bob')($map));
+
+        $map = ['bob' => 'haha'];
+        $this->assertEquals('haha', t::n('bob')($map));
+    }
 }

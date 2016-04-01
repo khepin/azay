@@ -1,1 +1,11 @@
+<json>    = null | bool | string | number | array
+array	= <'['> <ows> array_content (',' array_content)? <ows> <']'>
+<array_content> = json
+number  = #"(0|([1-9][0-9]*))(\.[0-9]*)?"
+true    = "true"
+false   = "false"
+bool    = true | false
+null    = "null"
 string  = #'"(\\\"|[^"])*"'
+ws		= #"\s+"
+ows		= #"\s*"

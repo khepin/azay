@@ -4,15 +4,17 @@ namespace Khepin\Partibus;
 use Khepin\Partibus\Combinators as c;
 use Khepin\Partibus\Parsers as p;
 
+/**
+ * @group bnfgrammar
+ */
 class BnfGrammarTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider samples
      */
     function test_parsing($input, $output) {
         // $parsed = BnfGrammar::parse($input);
-        // $parsed = $output;
         // array_walk_recursive($parsed, function(&$item) {$item = (string) $item;});
-        // var_dump(json_encode($parsed));
+        // var_dump($parsed);
         $this->assertEquals(BnfGrammar::parse($input), $output);
 
     }
@@ -97,7 +99,31 @@ bloup = #"a+"',
                     ],
                     [[t::n('rule_name'),"bloup"],[t::n('rule'),[t::n('regexp'),"a+"]]]
                 ]
-            ]
+            ],
+            [
+                'def = ("group")?',
+                [[[t::n('rule_name'),'def'], [t::n('rule'),[t::n('maybe'),[t::n('group'),[t::n('string'),'group']]]]]]
+            ],
+            [
+                'def = ("group")+',
+                [[[t::n('rule_name'),'def'], [t::n('rule'),[t::n('plus'),[t::n('group'),[t::n('string'),'group']]]]]]
+            ],
+            [
+                'def = ("group")*',
+                [[[t::n('rule_name'),'def'], [t::n('rule'),[t::n('star'),[t::n('group'),[t::n('string'),'group']]]]]]
+            ],
+            [
+                'def = &("group")',
+                [[[t::n('rule_name'),'def'], [t::n('rule'),[t::n('look'),[t::n('group'),[t::n('string'),'group']]]]]]
+            ],
+            [
+                'def = !("group")',
+                [[[t::n('rule_name'),'def'], [t::n('rule'),[t::n('not'),[t::n('group'),[t::n('string'),'group']]]]]]
+            ],
+            // [
+            //     'def = a b | c d',
+            //     [[t::n('rule_name'),'def'], [t::n('rule'),[t::n('maybe'),[t::n('group'),[t::n('string'),'group']]]]]
+            // ],
         ];
     }
 }

@@ -74,69 +74,7 @@ class BnfGrammar {
             $token
         ));
 
-        $not_rule_part_parser = c::_and(
-            p::_string('!'),
-            $rule_part
-        );
-        $not_rule_part = function(Input $input) use($rule_part, $not_rule_part_parser) {
-            $result = $not_rule_part_parser($input);
-            array_shift($result);
-
-            return array_merge([t::n('not')], $result);
-        };
-
-        $look_rule_part_parser = c::_and(
-            p::_string('&'),
-            $rule_part
-        );
-        $look_rule_part = function(Input $input) use ($look_rule_part_parser) {
-            $result = $look_rule_part_parser($input);
-            array_shift($result);
-
-            return array_merge([t::n('look')], $result);
-        };
-
-        $plus_rule_part_parser = c::_and(
-            $rule_part,
-            p::_string('+')
-        );
-        $plus_rule_part = function(Input $input) use ($plus_rule_part_parser) {
-            $result = $plus_rule_part_parser($input);
-            array_pop($result);
-
-            return [t::n('plus'), $result[0]];
-        };
-
-        $star_rule_part_parser = c::_and(
-            $rule_part,
-            p::_string('*')
-        );
-        $star_rule_part = function(Input $input) use ($star_rule_part_parser) {
-            $result = $star_rule_part_parser($input);
-            array_pop($result);
-
-            return [t::n('star'), $result[0]];
-        };
-
-        $qmark_rule_part_parser = c::_and(
-            $rule_part,
-            p::_string('?')
-        );
-        $qmark_rule_part = function(Input $input) use ($qmark_rule_part_parser) {
-            $result = $qmark_rule_part_parser($input);
-            array_pop($result);
-
-            return [t::n('maybe'), $result[0]];
-        };
-
-        $rule_component = c::_or(
-            $star_rule_part,
-            $plus_rule_part,
-            $qmark_rule_part,
-            $not_rule_part,
-            $look_rule_part,
-            $rule_part
-        );
+        $rule_component = self::with_modifiers($rule_part);
 
         $or_parser = c::_and($ows, Parsers::_string('|'), $ows);
         $or = function(Input $input) use ($or_parser) {
@@ -173,6 +111,7 @@ class BnfGrammar {
             }
             return $ret;
         };
+        $group = self::with_modifiers($group);
 
         $hidden_parser = c::_and(
             c::hide(p::_string('<')),
@@ -213,5 +152,77 @@ class BnfGrammar {
         );
 
         return $parse($input);
+    }
+
+    /**
+     * Returns a parser that can parse the given parser with all the `+, *, !, &, ?`
+     * modifiers added to it.
+     * @param  callable $base_parser
+     * @return callable
+     */
+    public static function with_modifiers(callable $base_parser) : callable {
+        $not_parser = c::_and(
+            p::_string('!'),
+            $base_parser
+        );
+        $not = function(Input $input) use($base_parser, $not_parser) {
+            $result = $not_parser($input);
+            array_shift($result);
+
+            return array_merge([t::n('not')], $result);
+        };
+
+        $look_parser = c::_and(
+            p::_string('&'),
+            $base_parser
+        );
+        $look = function(Input $input) use ($look_parser) {
+            $result = $look_parser($input);
+            array_shift($result);
+
+            return array_merge([t::n('look')], $result);
+        };
+
+        $plus_parser = c::_and(
+            $base_parser,
+            p::_string('+')
+        );
+        $plus = function(Input $input) use ($plus_parser) {
+            $result = $plus_parser($input);
+            array_pop($result);
+
+            return [t::n('plus'), $result[0]];
+        };
+
+        $star_parser = c::_and(
+            $base_parser,
+            p::_string('*')
+        );
+        $star = function(Input $input) use ($star_parser) {
+            $result = $star_parser($input);
+            array_pop($result);
+
+            return [t::n('star'), $result[0]];
+        };
+
+        $qmark_parser = c::_and(
+            $base_parser,
+            p::_string('?')
+        );
+        $qmark = function(Input $input) use ($qmark_parser) {
+            $result = $qmark_parser($input);
+            array_pop($result);
+
+            return [t::n('maybe'), $result[0]];
+        };
+
+        return c::_or(
+            $star,
+            $plus,
+            $qmark,
+            $not,
+            $look,
+            $base_parser
+        );
     }
 }
