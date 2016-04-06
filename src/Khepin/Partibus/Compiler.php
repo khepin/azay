@@ -51,30 +51,17 @@ class Compiler {
         self::$transforms[t::n('hide')] = function($parser) {
             return c::hide($parser);
         };
-        self::$transforms[t::n('maybe')] = function($parser) {
-            return c::maybe($parser);
-        };
-        self::$transforms[t::n('star')] = function($parser) {
-            return c::star($parser);
-        };
-        self::$transforms[t::n('plus')] = function($parser) {
-            return c::plus($parser);
-        };
+        self::$transforms[t::n('maybe')] = [c::class, 'maybe'];
+        self::$transforms[t::n('star')] = [c::class, 'star'];
+        self::$transforms[t::n('plus')] = [c::class, 'plus'];
         self::$transforms[t::n('or')] = [c::class, '_or'];
         self::$transforms[t::n('and')] = [c::class, '_and'];
-        self::$transforms[t::n('rule')] = function($parser, array $rest = []) {
-            return self::compile_and_or($parser, $rest);
-        };
-        self::$transforms[t::n('look')] = function($parser) {
-            return c::look($parser);
-        };
-        self::$transforms[t::n('not')] = function($parser) {
-            return c::not($parser);
-        };
+        self::$transforms[t::n('rule')] = function($parser) { return $parser;};
+        self::$transforms[t::n('look')] = [c::class, 'look'];
+        self::$transforms[t::n('not')] = [c::class, 'not'];
         self::$transforms[t::n('group')] = function($parser, array $rest = []) {
-            $actual_parser = self::compile_and_or($parser, $rest);
-            return function(Input $input) use ($actual_parser) {
-                $ret = $actual_parser($input);
+            return function(Input $input) use ($parser) {
+                $ret = $parser($input);
                 if (is_null($ret)) {
                     return null;
                 }
@@ -83,20 +70,6 @@ class Compiler {
         };
 
         self::$initialized = true;
-    }
-
-    static function compile_and_or(callable $parser, array $rest) : callable {
-        if (empty($rest)) {
-            return $parser;
-        }
-
-        if ($rest[0] === t::n('and')) {
-            return c::_and($parser, $rest[1]);
-        }
-
-        if ($rest[0] === t::n('or')) {
-            return c::_or($parser, $rest[1]);
-        }
     }
 
     static function add_grammar_parser(splObjectStorage &$grammar, array $parser) : callable {

@@ -32,10 +32,6 @@ class Combinators {
         };
     }
 
-    static function tada() : callable {
-        $args = func_get_args();var_dump($args);die;
-    }
-
     /**
      * Combines any number of parsers so that the resulting parser will try them
      * successively until one of them passes. The result of that parser will be sent back.
