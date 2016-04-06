@@ -76,69 +76,67 @@ class BnfGrammar {
 
         $rule_component = self::with_modifiers($rule_part);
 
-        $or_parser = c::_and($ows, Parsers::_string('|'), $ows);
-        $or = function(Input $input) use ($or_parser) {
-            $or_parser($input);
-            return t::n('or');
-        };
-        $and = function(){return t::n('and');};
-
-        $more = c::maybe(
-            c::_and(
-                c::_or($or, $and),
-                $ows,
-                c::_or(c::ref($rule), c::ref($group), c::ref($hidden))
-            )
-        );
-        $rule = c::_and(
+        $rule_parser = c::_and(
             $ows,
             $rule_component,
-            $ows,
-            $more
+            $ows
         );
+        $rule = function(Input $input) use ($rule_parser) {
+            return $rule_parser($input)[0];
+        };
 
         $group_parser = c::_and(
             $ows,
             c::hide(p::_string('(')),
-            c::_or(c::ref($rule), c::ref($group), c::ref($hidden)),
+            c::_or(c::ref($alternate_rule), c::ref($group), c::ref($hidden)),
             c::hide(p::_string(')'))
         );
-        $group = function(Input $input) use ($group_parser, $more) {
+        $group = function(Input $input) use ($group_parser) {
             $ret = array_merge([t::n('group')], $group_parser($input));
-            $next = $more($input);
-            if (!is_null($next)) {
-                $ret = [t::n('compose'), $ret, $next];
-            }
             return $ret;
         };
         $group = self::with_modifiers($group);
 
         $hidden_parser = c::_and(
             c::hide(p::_string('<')),
-            $rule,
+            c::ref($alternate_rule),
             c::hide(p::_string('>'))
         );
-        $hidden = function(Input $input) use ($hidden_parser, $more) {
+        $hidden = function(Input $input) use ($hidden_parser) {
             $ret = array_merge([t::n('hide')], $hidden_parser($input));
-            $next = $more($input);
-            if (!is_null($next)) {
-                $ret = [t::n('compose'), $ret, $next];
-            }
             return $ret;
         };
 
-        $full_rule_parser = c::plus(
-            c::_and(
+        $concat_rule_parser = c::plus(
                 c::_or(
                     $group,
                     $hidden,
                     $rule
-                ),
-                $more
-            )
+                )
         );
-        $full_rule = function(Input $input) use ($full_rule_parser) {
-            return array_merge([t::n('rule')], $full_rule_parser($input)[0]);
+        $concat_rule = function(Input $input) use ($concat_rule_parser) {
+            $parsed = $concat_rule_parser($input);
+            if (count($parsed) > 1) {
+                return array_merge([t::n('and')], $parsed);
+            }
+            return $parsed[0];
+        };
+
+        $alternate_rule_parser = c::_and(
+            $concat_rule,
+            $ows,
+            c::star(c::_and(c::hide(p::_string('|')), $concat_rule, $ows))
+        );
+        $alternate_rule = function(Input $input) use ($alternate_rule_parser) {
+            $parsed = $alternate_rule_parser($input);
+            if (count($parsed) > 1) {
+                return array_merge([t::n('or'), array_shift($parsed)], array_map('array_shift', $parsed));
+            }
+            return $parsed[0];
+        };
+
+        $full_rule = function(Input $input) use ($alternate_rule) {
+            return [t::n('rule'), $alternate_rule($input)];
         };
 
         $parse = c::_and(

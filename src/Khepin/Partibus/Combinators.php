@@ -198,4 +198,10 @@ class Combinators {
             return null;
         };
     }
+
+    static function debug(callable $parser, string $name) : callable {
+        return function(Input $input) use ($name, $parser) {
+            return $parser($input);
+        };
+    }
 }

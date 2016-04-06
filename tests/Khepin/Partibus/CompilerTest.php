@@ -121,4 +121,11 @@ ows = #'\s+'";
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('bob')), [t::n('string'), 'bob']);
     }
+
+    function test_group_modifier() {
+        $grammar = "ng = !('a') 'cac'";
+        $parser = Compiler::compile(BnfGrammar::parse($grammar));
+        $this->assertEquals($parser(new Input('cac')), [t::n('ng'), 'cac']);
+
+    }
 }
