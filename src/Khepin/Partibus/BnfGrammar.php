@@ -98,6 +98,7 @@ class BnfGrammar {
         $group = self::with_modifiers($group);
 
         $hidden_parser = c::_and(
+            $ows,
             c::hide(p::_string('<')),
             c::ref($alternate_rule),
             c::hide(p::_string('>'))
@@ -109,8 +110,8 @@ class BnfGrammar {
 
         $concat_rule_parser = c::plus(
                 c::_or(
-                    $group,
                     $hidden,
+                    $group,
                     $rule
                 )
         );

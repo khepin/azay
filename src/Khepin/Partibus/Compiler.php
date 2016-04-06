@@ -60,12 +60,8 @@ class Compiler {
         self::$transforms[t::n('plus')] = function($parser) {
             return c::plus($parser);
         };
-        self::$transforms[t::n('or')] = function($parser, array $rest = []) {
-            return [t::n('or'), self::compile_and_or($parser, $rest)];
-        };
-        self::$transforms[t::n('and')] = function($parser, array $rest = []) {
-            return [t::n('and'), self::compile_and_or($parser, $rest)];
-        };
+        self::$transforms[t::n('or')] = [c::class, '_or'];
+        self::$transforms[t::n('and')] = [c::class, '_and'];
         self::$transforms[t::n('rule')] = function($parser, array $rest = []) {
             return self::compile_and_or($parser, $rest);
         };
@@ -84,9 +80,6 @@ class Compiler {
                 }
                 return [$ret];
             };
-        };
-        self::$transforms[t::n('compose')] = function($parser, array $rest = []) {
-            return self::compile_and_or($parser, $rest);
         };
 
         self::$initialized = true;

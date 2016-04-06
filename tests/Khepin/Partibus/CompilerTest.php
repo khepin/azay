@@ -8,6 +8,10 @@ class CompilerTest extends \PHPUnit_Framework_TestCase {
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('bob')), [t::n('hello'), 'bob']);
 
+        $grammar = 'hello = "bob" "a"';
+        $parser = Compiler::compile(BnfGrammar::parse($grammar));
+        $this->assertEquals($parser(new Input('boba')), [t::n('hello'), 'bob', 'a']);
+
         $grammar = 'hello = "bob" ε';
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('bob')), [t::n('hello'), 'bob', [t::n('ε')]]);
@@ -126,6 +130,5 @@ ows = #'\s+'";
         $grammar = "ng = !('a') 'cac'";
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
         $this->assertEquals($parser(new Input('cac')), [t::n('ng'), 'cac']);
-
     }
 }

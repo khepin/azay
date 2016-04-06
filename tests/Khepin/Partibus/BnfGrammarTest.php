@@ -163,6 +163,12 @@ class BnfGrammarTest extends \PHPUnit_Framework_TestCase {
                                                                               [t::n('string'), 'b']],
                                                                 [t::n('string'), 'hello']]]]]
             ],
+            [
+                "tag = <'a'> | <'b'>",
+                [[[t::n('rule_name'), 'tag'], [t::n('rule'), [t::n('or'),
+                                                                [t::n('hide'), [t::n('string'), 'a']],
+                                                                [t::n('hide'), [t::n('string'), 'b']]]]]]
+            ]
         ];
     }
 }
