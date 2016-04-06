@@ -59,15 +59,7 @@ class Compiler {
         self::$transforms[t::n('rule')] = function($parser) { return $parser;};
         self::$transforms[t::n('look')] = [c::class, 'look'];
         self::$transforms[t::n('not')] = [c::class, 'not'];
-        self::$transforms[t::n('group')] = function($parser, array $rest = []) {
-            return function(Input $input) use ($parser) {
-                $ret = $parser($input);
-                if (is_null($ret)) {
-                    return null;
-                }
-                return [$ret];
-            };
-        };
+        self::$transforms[t::n('group')] = function($parser) { return $parser;};
 
         self::$initialized = true;
     }

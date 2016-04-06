@@ -83,7 +83,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase {
 
         $grammar = 'hello = ("o" #"a+")';
         $parser = Compiler::compile(BnfGrammar::parse($grammar));
-        $this->assertEquals($parser(new Input('oaaa')), [t::n('hello'), ['o', 'aaa']]);
+        $this->assertEquals($parser(new Input('oaaa')), [t::n('hello'), 'o', 'aaa']);
     }
 
     function test_multiple_rules() {

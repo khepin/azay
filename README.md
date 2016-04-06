@@ -57,14 +57,3 @@ Will produce an output of:
 
 ## What is `t`
 
-## Wishful Roadmap
-
-- [ ] Ensure group rule `()` and ignore rule `<>` can mix with `?, &, !, +, *`
-- [ ] Have concatenation take precedence over alternation
-- [ ] Beter parse errors
-- [ ] Try to always return arrays. Return empty ones instead of null. Check for `empty($result)` instead of `is_null($result)` Careful, sometimes we might actually want the empty array...
-- [ ] Add compiler to output actual PHP code
-- [ ] Add documentation
-- [ ] Explore possibilities of using GLL in PHP
-- [ ] Implement a sample JSON parser
-- [ ] Have proper EBNF associativity (AND is First, OR is second). This could be done through [t::n('compose')] and something like `&"|"`
