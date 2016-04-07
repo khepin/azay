@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 /**
  * Functions for the creation of base parsers.

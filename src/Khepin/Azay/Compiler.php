@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
-use Khepin\Partibus\Combinators as c;
-use Khepin\Partibus\Parsers as p;
-use Khepin\Partibus\BnfGrammar as g;
-use Khepin\Partibus\t;
+use Khepin\Azay\Combinators as c;
+use Khepin\Azay\Parsers as p;
+use Khepin\Azay\BnfGrammar as g;
+use Khepin\Azay\t;
 use \splObjectStorage;
 
 class Compiler {

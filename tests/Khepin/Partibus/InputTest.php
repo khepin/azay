@@ -1,5 +1,5 @@
 <?php
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 class InputTest extends \PHPUnit_Framework_TestCase {
     function test_reading_input() {

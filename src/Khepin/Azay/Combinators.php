@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 /**
  * Functions to combine or augment existing parse functions
@@ -103,7 +103,7 @@ class Combinators {
 
     /**
      * Same as ::star except it's one or more times instead of 0 or more
-     * @see    Khepin\Partibus\Combinators::star
+     * @see    Khepin\Azay\Combinators::star
      * @param  callable $parser
      * @return callable
      */
@@ -172,7 +172,7 @@ class Combinators {
     /**
      * Similar to ::ref but uses a reference within a given grammar where a grammar is an splObjectStorage
      * map of t -> parser
-     * @see    Khepin\Partibus\Combinators::ref
+     * @see    Khepin\Azay\Combinators::ref
      * @param  \splObjectStorage &$grammar
      * @param  t                 $ref
      * @return callable

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 /**
  * Represents a parser's input as the parser keeps advancing through the parsing process.
@@ -48,7 +48,7 @@ class Input {
     /**
      * Advance the current position of n characters. Meaning they have been successfully parsed.
      * @param  integer $i
-     * @return \Khepin\Partibus\Input
+     * @return \Khepin\Azay\Input
      */
     public function advance(int $i = 1) : Input {
         $this->position += $i;

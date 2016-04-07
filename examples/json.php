@@ -6,7 +6,7 @@ function stringify($tree) {
     return $tree;
 }
 
-$parse = \Khepin\Partibus\Parsers::from_grammar(file_get_contents(__DIR__.'/json.bnf'));
+$parse = \Khepin\Azay\Parsers::from_grammar(file_get_contents(__DIR__.'/json.bnf'));
 
 $input = '[1,2,3, [4,5,6]]';
 // $input = '{ "h": "bob", "i":"bloup" }';

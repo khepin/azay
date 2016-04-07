@@ -1,8 +1,8 @@
 <?php
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
-use Khepin\Partibus\Combinators as c;
-use Khepin\Partibus\Parsers as p;
+use Khepin\Azay\Combinators as c;
+use Khepin\Azay\Parsers as p;
 
 /**
  * @group bnfgrammar

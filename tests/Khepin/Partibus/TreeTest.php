@@ -1,5 +1,5 @@
 <?php
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 class TreeTest extends \PHPUnit_Framework_TestCase {
 

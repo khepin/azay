@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 /**
  * Token class made to represent unique names.
@@ -33,7 +33,7 @@ class t {
     /**
      * Create a new token
      * @param  string $name
-     * @return \Khepin\Partibus\t
+     * @return \Khepin\Azay\t
      */
     public static function n(string $name) : t {
         $name = (string) $name;

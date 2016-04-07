@@ -1,5 +1,5 @@
 <?php
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
 class tTest extends \PHPUnit_Framework_TestCase {
 

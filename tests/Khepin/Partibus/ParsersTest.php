@@ -1,7 +1,5 @@
 <?php
-namespace Khepin\Partibus;
-
-use Khepin\Partibus\epsilon;
+namespace Khepin\Azay;
 
 class ParsersTest extends \PHPUnit_Framework_TestCase {
 

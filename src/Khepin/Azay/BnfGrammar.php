@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace Khepin\Partibus;
+namespace Khepin\Azay;
 
-use Khepin\Partibus\Combinators as c;
-use Khepin\Partibus\Parsers as p;
+use Khepin\Azay\Combinators as c;
+use Khepin\Azay\Parsers as p;
 
 /**
  * A somewhat similar to BNF grammar. This can be used to parse parser definitions.

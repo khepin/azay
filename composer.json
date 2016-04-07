@@ -1,5 +1,5 @@
 {
-    "name": "khepin/partibus",
+    "name": "khepin/azay",
     "description": "A parsing library to help library to help you generate all kinds of parsers.",
     "require-dev": {
         "phpunit/phpunit": "^5.2"
