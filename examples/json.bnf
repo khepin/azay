@@ -1,6 +1,10 @@
-<json>    = null | bool | string | number | array
-array	= <'['> <ows> array_content (<ows ','> <ows> array_content)* <ows> <']'>
+<json>  = null | bool | string | number | array | object
+array	= <'['> <ows> array_content (<ows ',' ows> array_content)* <ows> <']'>
 <array_content> = json
+object  = "{" ows "}" | <"{"> pair (<","> pair)* <"}">
+pair    = <ows> key <ows> <":"> <ows> value <ows>
+value   = json
+key     = number | string
 number  = #"(0|([1-9][0-9]*))(\.[0-9]*)?"
 true    = "true"
 false   = "false"

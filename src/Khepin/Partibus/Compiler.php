@@ -55,13 +55,35 @@ class Compiler {
         self::$transforms[t::n('star')] = [c::class, 'star'];
         self::$transforms[t::n('plus')] = [c::class, 'plus'];
         self::$transforms[t::n('or')] = [c::class, '_or'];
-        self::$transforms[t::n('and')] = [c::class, '_and'];
+        self::$transforms[t::n('and')] = function() { // Unsplice the parts that are non tokenized arrays.
+            $parser = call_user_func_array([c::class, '_and'], func_get_args());
+            return function(Input $input) use ($parser) {
+                $output = $parser($input);
+                if (is_array($output)) {
+                    return self::unsplice($output);
+                }
+                return $output;
+            };
+        };
         self::$transforms[t::n('rule')] = function($parser) { return $parser;};
         self::$transforms[t::n('look')] = [c::class, 'look'];
         self::$transforms[t::n('not')] = [c::class, 'not'];
         self::$transforms[t::n('group')] = function($parser) { return $parser;};
 
         self::$initialized = true;
+    }
+
+    static function unsplice(array $array) : array {
+        $ret = [];
+        foreach($array as $item) {
+            if (is_array($item) && !($item[0] instanceof t)) {
+                $ret = array_merge($ret, $item);
+            } else {
+                $ret[] = $item;
+            }
+        }
+
+        return $ret;
     }
 
     static function add_grammar_parser(splObjectStorage &$grammar, array $parser) : callable {
