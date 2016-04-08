@@ -6,6 +6,16 @@ This library is heavily inspired from [Instaparse](https://github.com/Engelberg/
 
 ![build status on circleci](https://circleci.com/gh/khepin/partibus.svg?style=shield)
 
+## Why?
+
+To build parsers and or compilers. 
+
+This helps turn structured text into structured data. And then helps you manipulate that structured data.
+
+This could be used to build the next great PHP templating engine or extract data from templated documents.
+
+This can also replace complex regular expressions by providing a more understandable syntax.
+
 ## Features
 
 This aims to be the easiest, most simple way to build parsers in PHP.
