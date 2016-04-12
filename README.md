@@ -4,7 +4,7 @@
 
 This library is heavily inspired from [Instaparse](https://github.com/Engelberg/instaparse).
 
-![build status on circleci](https://circleci.com/gh/khepin/partibus.svg?style=shield)
+[![Circle CI](https://circleci.com/gh/khepin/azay.svg?style=svg)](https://circleci.com/gh/khepin/azay)
 
 ## Why?
 
